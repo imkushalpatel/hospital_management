@@ -4,12 +4,14 @@
  */
 package com.northeastern.hospital_management.view;
 
+import com.northeastern.hospital_management.dao.CommunityRepository;
 import com.northeastern.hospital_management.data.MainDataList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import com.northeastern.hospital_management.model.table.HospitalModel;
 import com.northeastern.hospital_management.model.Community;
 import com.northeastern.hospital_management.model.Hospital;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -22,14 +24,14 @@ public class HospitalCRUD extends javax.swing.JPanel {
      */
     HospitalModel hm;
 
+    @Autowired
+    CommunityRepository communityRepository;
+
     public HospitalCRUD() {
         initComponents();
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Ottawa));
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Toronto));
         hm = new HospitalModel();
         hospitalTable.setModel(hm);
-        communityComboBox.setModel(new DefaultComboBoxModel<>(MainDataList.communityList.toArray(new Community[0])));
-        MainDataList.hospitalList.add(new Hospital(Hospital.ID++, "gell", 1001));
+//        communityComboBox.setModel(new DefaultComboBoxModel<>(communityRepository.findAll().toArray(new Community[0])));
         hm.fireTableDataChanged();
     }
 
@@ -224,7 +226,7 @@ public class HospitalCRUD extends javax.swing.JPanel {
         }
         Hospital hospital = MainDataList.hospitalList.get(hospitalTable.getSelectedRow());
         nameField.setText(hospital.getName());
-        Community community = MainDataList.communityList.stream().filter((c) -> c.getCommunityId() == hospital.getCommunityId()).findAny().get();
+        Community community = communityRepository.findById(hospital.getCommunityId());
         communityComboBox.setSelectedItem(community);
         hospitalIdField.setText(String.valueOf(hospital.getHospitalId()));
         addButton.setEnabled(false);

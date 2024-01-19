@@ -26,10 +26,6 @@ public class DoctorCRUD extends javax.swing.JPanel {
 
     public DoctorCRUD() {
         initComponents();
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Ottawa));
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Toronto));
-        MainDataList.hospitalList.add(new Hospital(Hospital.ID++, "gell", 1001));
-        MainDataList.hospitalList.add(new Hospital(Hospital.ID++, "well", 1002));
         dm = new DoctorModel();
         doctorTable.setModel(dm);
         genderComboBox.setModel(new DefaultComboBoxModel<>(Person.Gender.values()));

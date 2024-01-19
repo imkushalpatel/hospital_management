@@ -4,16 +4,20 @@
  */
 package com.northeastern.hospital_management.view;
 
+import com.northeastern.hospital_management.dao.CommunityRepository;
 import com.northeastern.hospital_management.data.MainDataList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import com.northeastern.hospital_management.model.Community;
 import com.northeastern.hospital_management.model.table.CommunityModel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  *
  * @author gunjitarora
  */
+@Component
 public class CommunityCRUD extends javax.swing.JPanel {
 
     /**
@@ -21,14 +25,16 @@ public class CommunityCRUD extends javax.swing.JPanel {
      */
     CommunityModel cm;
 
+    
+    CommunityRepository communityRepository;
+
     public CommunityCRUD() {
+        this.communityRepository=
+        communityRepository =new CommunityRepository();
         initComponents();
         cm = new CommunityModel();
         communityTable.setModel(cm);
         cityComboBox.setModel(new DefaultComboBoxModel<>(Community.City.values()));
-
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Ottawa));
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Toronto));
 
     }
 
@@ -209,7 +215,7 @@ public class CommunityCRUD extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Please select community from list", "No community Slected", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        MainDataList.communityList.remove(communityTable.getSelectedRow());
+//        communityRepository.deleteById((int) communityTable.getValueAt(communityTable.getSelectedRow(), 0));
         cm.fireTableDataChanged();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -232,8 +238,7 @@ public class CommunityCRUD extends javax.swing.JPanel {
         c.setCity((Community.City) cityComboBox.getSelectedItem());
         c.setDistrict(districtField.getText());
         c.setPinCode(pinCodeField.getText());
-        c.setCommunityId(Community.ID++);
-        MainDataList.communityList.add(c);
+        communityRepository.save(c);
         clearButton.doClick();
         cm.fireTableDataChanged();
     }//GEN-LAST:event_addButtonActionPerformed
@@ -245,7 +250,7 @@ public class CommunityCRUD extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Please select community from list", "No community Slected", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        Community community = MainDataList.communityList.get(communityTable.getSelectedRow());
+        Community community = communityRepository.findById((int) communityTable.getValueAt(communityTable.getSelectedRow(), 0));
         cityComboBox.setSelectedItem(community.getCity());
         areaField.setText(community.getArea());
         districtField.setText(community.getDistrict());
@@ -258,12 +263,12 @@ public class CommunityCRUD extends javax.swing.JPanel {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
         // TODO add your handling code here:
-        Community c = MainDataList.communityList.get(communityTable.getSelectedRow());
-        c.setArea(areaField.getText());
-        c.setCity((Community.City) cityComboBox.getSelectedItem());
-        c.setDistrict(districtField.getText());
-        c.setPinCode(pinCodeField.getText());
-        MainDataList.communityList.set(communityTable.getSelectedRow(), c);
+        Community community = communityRepository.findById((int) communityTable.getValueAt(communityTable.getSelectedRow(), 0));
+        community.setArea(areaField.getText());
+        community.setCity((Community.City) cityComboBox.getSelectedItem());
+        community.setDistrict(districtField.getText());
+        community.setPinCode(pinCodeField.getText());
+        communityRepository.save(community);
         clearButton.doClick();
         cm.fireTableDataChanged();
     }//GEN-LAST:event_updateButtonActionPerformed

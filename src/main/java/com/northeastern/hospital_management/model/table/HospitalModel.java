@@ -4,10 +4,12 @@
  */
 package com.northeastern.hospital_management.model.table;
 
+import com.northeastern.hospital_management.dao.CommunityRepository;
 import javax.swing.table.AbstractTableModel;
 import com.northeastern.hospital_management.model.Community;
 import com.northeastern.hospital_management.model.Hospital;
 import com.northeastern.hospital_management.data.MainDataList;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -15,6 +17,8 @@ import com.northeastern.hospital_management.data.MainDataList;
  */
 public class HospitalModel extends AbstractTableModel {
 
+    @Autowired
+    private CommunityRepository communityRepository;
     private final String[] columnNames
             = {
                 "Name",
@@ -48,7 +52,7 @@ public class HospitalModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Hospital hospital = MainDataList.hospitalList.get(rowIndex);
-        Community community = MainDataList.communityList.stream().filter((c) -> c.getCommunityId() == hospital.getCommunityId()).findAny().get();
+        Community community = new Community();
         return switch (columnIndex) {
             case 0 ->
                 hospital.getName();

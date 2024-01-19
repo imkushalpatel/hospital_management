@@ -41,7 +41,7 @@ public class PatientDirectory extends javax.swing.JPanel {
         cityComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (cityComboBox.getSelectedIndex() != -1) {
-                    communityComboBox.setModel(new DefaultComboBoxModel<>(MainDataList.communityList.stream().filter((c) -> c.getCity() == cityComboBox.getSelectedItem()).toArray(Community[]::new)));
+//                    communityComboBox.setModel(new DefaultComboBoxModel<>(MainDataList.communityList.stream().filter((c) -> c.getCity() == cityComboBox.getSelectedItem()).toArray(Community[]::new)));
                     communityComboBox.setSelectedIndex(-1);
                 }
             }

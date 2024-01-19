@@ -4,45 +4,41 @@
  */
 package com.northeastern.hospital_management.view;
 
-import com.northeastern.hospital_management.dao.CommunityRepository;
 import com.northeastern.hospital_management.data.MainDataList;
 import javax.swing.JFrame;
 import com.northeastern.hospital_management.model.Admin;
-import com.northeastern.hospital_management.model.Community;
 import com.northeastern.hospital_management.model.Doctor;
 import com.northeastern.hospital_management.model.Hospital;
 import com.northeastern.hospital_management.model.Person;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.Banner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Controller;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
  *
  * @author gunjitarora
  */
-@SpringBootApplication
-@ComponentScan({"com.northeastern.hospital_management"})
+//@SpringBootApplication
+//@ComponentScan(basePackages = {"com.northeastern.hospital_management.*"})
+//@EnableJpaRepositories(basePackages = {"com.northeastern.hospital_management.*"})
+//@EntityScan(basePackages = {"com.northeastern.hospital_management.*"})
 public class MainJFrame extends javax.swing.JFrame {
 
     /**
      * Creates new form MainJFrame
      */
-    @Autowired
-    private CommunityRepository communityRepository;
-
     public MainJFrame() {
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setVisible(true);
+        
+//        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//        this.setVisible(true);
         initComponents();
 
         MainDataList.adminList.add(new Admin("admin@gmail.com", "pass123", Admin.Role.SYSTEM_ADMIN));
         MainDataList.adminList.add(new Admin("comm_admin@gmail.com", "pass123", Admin.Role.COMMUNITY_ADMIN));
         MainDataList.adminList.add(new Admin("hosp_admin@gmail.com", "pass123", Admin.Role.HOSPITAL_ADMIN));
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Ottawa));
-        MainDataList.communityList.add(new Community(Community.ID++, "abc", "abc", "abc", Community.City.Toronto));
         MainDataList.hospitalList.add(new Hospital(Hospital.ID++, "gell", 1001));
         MainDataList.hospitalList.add(new Hospital(Hospital.ID++, "well", 1002));
         MainDataList.doctorList.add(new Doctor(Doctor.ID++, "aaa", "bbb", Person.Gender.MALE, "abc", "abc", 1001));
@@ -140,10 +136,12 @@ public class MainJFrame extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(216, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addContainerGap(216, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                .addComponent(jLabel3)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -179,9 +177,11 @@ public class MainJFrame extends javax.swing.JFrame {
     private void patientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientButtonActionPerformed
         // TODO add your handling code here:
 //        jSplitPane1.setBottomComponent(new PatientDirectory());
-        Community c = new Community();
-        c.setCity(Community.City.Ottawa);
-        communityRepository.save(c);
+        jSplitPane1.setBottomComponent(new CommunityCRUD());
+
+//        Community c = new Community();
+//        c.setCity(Community.City.Ottawa);
+//        communityRepository.save(c);
     }//GEN-LAST:event_patientButtonActionPerformed
 
     private void doctorButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doctorButtonActionPerformed
@@ -218,7 +218,7 @@ public class MainJFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
         var ctx = new SpringApplicationBuilder(MainJFrame.class)
-                .headless(false).run(args);
+                .headless(false).bannerMode(Banner.Mode.OFF).run(args);
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

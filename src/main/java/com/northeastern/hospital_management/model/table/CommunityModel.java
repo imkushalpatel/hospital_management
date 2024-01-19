@@ -6,13 +6,14 @@ package com.northeastern.hospital_management.model.table;
 
 import javax.swing.table.AbstractTableModel;
 import com.northeastern.hospital_management.model.Community;
-import com.northeastern.hospital_management.data.MainDataList;
 
 /**
  *
  * @author imkus
  */
 public class CommunityModel extends AbstractTableModel {
+
+    
 
     private final String[] columnNames
             = {
@@ -24,12 +25,11 @@ public class CommunityModel extends AbstractTableModel {
             };
 
     public CommunityModel() {
-
     }
 
     @Override
     public int getRowCount() {
-        return MainDataList.communityList.size();
+        return 0;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class CommunityModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Community community = MainDataList.communityList.get(rowIndex);
+        Community community = new Community();
         return switch (columnIndex) {
             case 0 ->
                 community.getCommunityId();
